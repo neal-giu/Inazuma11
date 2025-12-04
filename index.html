@@ -3,57 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Jeu de simulation : aidez votre école à résister aux Big Tech grâce au numérique libre et responsable.">
-    <title>Résist'Classe - Le jeu de la résistance numérique</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Jeu Résist'Classe - Nuit de l'Info 2025 - Mission NIRD & RSE">
+    <title>Résist'Classe - Mission NIRD</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
 </head>
 <body>
+
 <div class="main-container">
     <header>
         <h1>🏛️ Résist'Classe <span class="subtitle">Mission NIRD</span></h1>
-        <div id="stats-bar" role="status" aria-live="polite">
-            <div class="stat-item" title="Budget de l'école">💰 <span id="score-budget">2000</span>€</div>
-            <div class="stat-item" title="Impact écologique (plus c'est haut, mieux c'est)">🌱 <span id="score-eco">50%</span></div>
-            <div class="stat-item" title="Niveau d'indépendance numérique">✊ <span id="score-libre">20%</span></div>
+
+        <button id="btn-eco-mode" class="small-btn" title="Activer le mode basse consommation">🌸 Mode Éco</button>
+
+        <div id="stats-bar" role="status">
+            <div class="stat-item" title="Budget">💰 <span id="score-budget">2000</span>€</div>
+            <div class="stat-item" title="Score Écologique">🌱 <span id="score-eco">50%</span></div>
+            <div class="stat-item" title="Indépendance Numérique">✊ <span id="score-libre">20%</span></div>
         </div>
     </header>
 
     <main id="game-interface">
         <section id="scenario-card">
             <h2 id="scenario-title">Chargement...</h2>
-            <p id="scenario-description">Initialisation du village résistant.</p>
-
+            <p id="scenario-description">Initialisation du village...</p>
             <div id="choices-container"></div>
         </section>
 
-        <section id="laser-game-area" class="hidden">
-        </section>
+        <section id="laser-game-area" class="hidden"></section>
 
         <section id="end-game-card" class="hidden">
             <h2>🎉 Fin de la mission !</h2>
             <p id="end-game-message"></p>
-            <button id="btn-end-reset" class="btn-reset" onclick="resetGame()">Recommencer la résistance</button>
+            <button id="btn-end-reset" class="btn-reset">Recommencer la résistance</button>
         </section>
     </main>
 
-    <aside id="assistant-ia" aria-labelledby="ia-title">
-        <h3 id="ia-title">🤖 L'Astérix-Bot (Assistant Low-Tech)</h3>
-        <div class="ia-interface">
-            <input type="text" id="user-question" placeholder="Posez une question sur le Libre..." aria-label="Votre question au bot">
-            <button id="btn-ask-bot">Demander</button>
-            <button id="btn-lang-switch" class="small-btn">FR / AR</button>
+    <aside id="assistant-ia">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 id="ia-title" style="margin:0;">🤖 IA Low-Cost <span class="offline-tag">[OFFLINE]</span></h3>
+            <button id="btn-lang-switch" class="small-btn" style="border-color:var(--neon-green); color:var(--neon-green);">عربي / FR</button>
         </div>
-        <p id="bot-response" role="status">Bonjour ! Je suis une IA sobre qui tourne localement sur votre navigateur. Posez-moi une question sur Linux, le RGPD ou l'obsolescence !</p>
-        <div id="bot-suggestions"></div>
+
+        <p class="ia-subtitle" id="ia-subtitle">Assistant optimisé pour les zones à faible connexion.</p>
+
+        <div class="ia-interface">
+            <input type="text" id="user-question" placeholder="Question (ex: CAF, Linux...)" aria-label="Posez votre question">
+            <button id="btn-ask-bot">Demander</button>
+        </div>
+        <p id="bot-response">Bonjour. Je suis une IA locale. Posez-moi une question sur les services publics ou le logiciel libre.</p>
     </aside>
 
     <footer>
-        <p>Projet Nuit de l'Info 2025 - <a href="about.html">Pourquoi ce jeu ? (Démarche RSE & Sources)</a> - Licence MIT</p>
-        <button id="btn-reset-save" class="small-btn">Effacer ma sauvegarde locale</button>
+        <div class="footer-actions">
+            <button id="btn-laser-game" class="big-action-btn">🔫 ZONE DÉFOULOIR (DÉFI 509)</button>
+
+            <button id="btn-rse-contrib" class="big-action-btn rse-btn">💡 CONTRIBUTION RSE (DÉFI 508)</button>
+        </div>
+
+        <p>Projet Nuit de l'Info 2025 - Licence MIT - <a href="about.html" style="color:var(--neon-blue)">À propos</a></p>
+        <button id="btn-reset-save" class="small-btn">Reset Sauvegarde</button>
     </footer>
 </div>
 
-<script src="script.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
