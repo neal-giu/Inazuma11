@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jeu de simulation : aidez votre école à résister aux Big Tech grâce au numérique libre et responsable.">
+    <title>Résist'Classe - Le jeu de la résistance numérique</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
+</head>
+<body>
+<div class="main-container">
+    <header>
+        <h1>🏛️ Résist'Classe <span class="subtitle">Mission NIRD</span></h1>
+        <div id="stats-bar" role="status" aria-live="polite">
+            <div class="stat-item" title="Budget de l'école">💰 <span id="score-budget">1000</span>€</div>
+            <div class="stat-item" title="Impact écologique (plus c'est haut, mieux c'est)">🌱 <span id="score-eco">50</span>%</div>
+            <div class="stat-item" title="Niveau d'indépendance numérique">✊ <span id="score-libre">10</span>%</div>
+        </div>
+    </header>
+
+    <main id="game-interface">
+        <section id="scenario-card">
+            <h2 id="scenario-title">Chargement...</h2>
+            <p id="scenario-description">Initialisation du village résistant.</p>
+
+            <div id="choices-container"></div>
+        </section>
+
+        <section id="end-game-card" class="hidden">
+            <h2>🎉 Fin de la mission !</h2>
+            <p id="end-game-message"></p>
+            <button onclick="resetGame()" class="btn-reset">Recommencer la résistance</button>
+        </section>
+    </main>
+
+    <aside id="assistant-ia" aria-labelledby="ia-title">
+        <h3 id="ia-title">🤖 L'Astérix-Bot (Assistant Low-Tech)</h3>
+        <div class="ia-interface">
+            <input type="text" id="user-question" placeholder="Posez une question sur le Libre..." aria-label="Votre question au bot">
+            <button id="btn-ask-bot">Demander</button>
+        </div>
+        <p id="bot-response" role="status">Bonjour ! Je suis une IA sobre qui tourne localement sur votre navigateur. Posez-moi une question sur Linux, le RGPD ou l'obsolescence !</p>
+    </aside>
+
+    <footer>
+        <p>Projet Nuit de l'Info 2025 - <a href="about.html">Pourquoi ce jeu ? (Démarche RSE & Sources)</a> - Licence MIT</p>
+        <button id="btn-reset-save" class="small-btn">Effacer ma sauvegarde locale</button>
+    </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

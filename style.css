@@ -1,0 +1,179 @@
+/* --- Configuration Green IT & Base --- */
+:root {
+    --bg-color: #1a1a2e; /* Fond sombre (économie d'énergie OLED) */
+    --card-bg: #16213e;
+    --text-color: #eaeaea;
+    --accent-green: #2ecc71; /* Couleur de succès/écologie */
+    --accent-red: #e74c3c; /* Couleur de coût/danger */
+    --accent-blue: #3498db; /* Couleur de liberté */
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.main-container {
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* --- Header & Stats --- */
+header {
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 0.6em;
+    color: var(--accent-blue);
+    display: block;
+}
+
+#stats-bar {
+    display: flex;
+    justify-content: space-around;
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.stat-item span {
+    font-family: monospace;
+    font-size: 1.3rem;
+}
+
+/* --- Jeu Principal --- */
+#scenario-card, #end-game-card {
+    background: var(--card-bg);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    border: 2px solid #333;
+}
+
+#scenario-title {
+    color: var(--accent-blue);
+    margin-top: 0;
+}
+
+#choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* Styles des boutons */
+button {
+    padding: 15px 20px;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: transform 0.1s, filter 0.2s;
+    color: white;
+    text-align: left;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+/* Classes dynamiques pour les boutons selon leur impact */
+.choice-btn-expensive { background-color: #c0392b; border-left: 5px solid #e74c3c; }
+.choice-btn-sustainable { background-color: #27ae60; border-left: 5px solid #2ecc71; color: #000; }
+.choice-btn-neutral { background-color: #7f8c8d; border-left: 5px solid #95a5a6; }
+
+/* --- IA Assistant --- */
+#assistant-ia {
+    background: #1f1f3a;
+    padding: 20px;
+    border-radius: 12px;
+    border-top: 3px solid var(--accent-blue);
+}
+
+#ia-title { margin-top: 0; }
+
+.ia-interface {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#user-question {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background: #333;
+    color: white;
+}
+
+#btn-ask-bot {
+    padding: 10px 20px;
+    background-color: var(--accent-blue);
+}
+
+#bot-response {
+    font-style: italic;
+    background: #16162e;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* --- Footer & Utilitaires --- */
+footer {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: auto;
+}
+
+footer a { color: var(--accent-blue); }
+
+.hidden { display: none !important; }
+
+.btn-reset {
+    background-color: var(--accent-blue);
+    width: 100%;
+    text-align: center;
+}
+
+.small-btn {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    background: #444;
+    margin-top: 10px;
+}
+
+/* Responsive basique */
+@media (max-width: 600px) {
+    #stats-bar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}
