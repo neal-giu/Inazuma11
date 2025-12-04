@@ -13,9 +13,9 @@
     <header>
         <h1>🏛️ Résist'Classe <span class="subtitle">Mission NIRD</span></h1>
         <div id="stats-bar" role="status" aria-live="polite">
-            <div class="stat-item" title="Budget de l'école">💰 <span id="score-budget">1000</span>€</div>
-            <div class="stat-item" title="Impact écologique (plus c'est haut, mieux c'est)">🌱 <span id="score-eco">50</span>%</div>
-            <div class="stat-item" title="Niveau d'indépendance numérique">✊ <span id="score-libre">10</span>%</div>
+            <div class="stat-item" title="Budget de l'école">💰 <span id="score-budget">2000</span>€</div>
+            <div class="stat-item" title="Impact écologique (plus c'est haut, mieux c'est)">🌱 <span id="score-eco">50%</span></div>
+            <div class="stat-item" title="Niveau d'indépendance numérique">✊ <span id="score-libre">20%</span></div>
         </div>
     </header>
 
@@ -27,10 +27,13 @@
             <div id="choices-container"></div>
         </section>
 
+        <section id="laser-game-area" class="hidden">
+        </section>
+
         <section id="end-game-card" class="hidden">
             <h2>🎉 Fin de la mission !</h2>
             <p id="end-game-message"></p>
-            <button onclick="resetGame()" class="btn-reset">Recommencer la résistance</button>
+            <button id="btn-end-reset" class="btn-reset" onclick="resetGame()">Recommencer la résistance</button>
         </section>
     </main>
 

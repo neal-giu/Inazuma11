@@ -205,3 +205,27 @@ footer a { color: var(--accent-blue); }
         text-align: center;
     }
 }
+
+#laser-game-area {
+    position: fixed; /* ou absolute, mais fixed est mieux pour couvrir l'écran */
+    top: 0;
+    left: 0;
+    width: 100vw; /* DOIT AVOIR UNE LARGEUR */
+    height: 100vh; /* DOIT AVOIR UNE HAUTEUR */
+    background-color: #000033;
+    color: white;
+    text-align: center;
+    padding-top: 50px;
+    z-index: 1000;
+    cursor: url('gun_cursor.png'), crosshair;
+}
+
+.target {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: red; /* ✅ Important pour la visibilité */
+    border-radius: 50%;
+    box-shadow: 0 0 10px red;
+    cursor: pointer;
+}
