@@ -32,17 +32,17 @@ const scenarios = [
                 impactText: "C'est gratuit car vos élèves sont le produit. Leurs données partent aux USA.",
                 cost: 0,
                 ecoImpact: -10, //(Matériel neuf non nécessaire)
-                    libreImpact: -40 // Dépendance totale
-                    },
-                    {
-                        text: "Refuser et utiliser 'La Forge' (outils libres de l'Éducation Nationale).",
-                            impactText: "Protection des données garantie et souveraineté numérique.",
-                        cost: 50, // Un peu de configuration
-                        ecoImpact: 0,
-                        libreImpact: +30
-                    }
-                    ]
-                    },
+                libreImpact: -40 // Dépendance totale
+            },
+            {
+                text: "Refuser et utiliser 'La Forge' (outils libres de l'Éducation Nationale).",
+                impactText: "Protection des données garantie et souveraineté numérique.",
+                cost: 50, // Un peu de configuration
+                ecoImpact: 0,
+                libreImpact: +30
+            }
+        ]
+    },
     {
         title: "Le Projecteur 'Intelligent'",
         description: "Pour 'moderniser' les salles, on vous propose un vidéoprojecteur 'intelligent' avec OS intégré et assistant vocal. Il est plus cher et sa durée de vie est limitée par son logiciel.",
@@ -103,28 +103,147 @@ const scenarios = [
             }
         ]
     },
-                    {
-                        title: "Sobriété vs Gaspillage",
-                            description: "Le conseil d'école veut 'moderniser' l'image de l'établissement en installant des écrans 4K connectés dans le hall d'entrée qui tourneront 24h/24.",
-                        choices: [
-                        {
-                            text: "Installer les écrans pour faire 'moderne'.",
-                            impactText: "Grosse consommation électrique inutile.",
-                            cost: 800,
-                            ecoImpact: -25,
-                            libreImpact: 0
-                        },
-                        {
-                            text: "Refuser : Sensibiliser à la sobriété numérique.",
-                            impactText: "L'argent est mieux investi dans des projets pédagogiques.",
-                            cost: 0,
-                            ecoImpact: +15,
-                            libreImpact: +5
-                        }
-                    ]
-                    },
-                    // Ajoute d'autres scénarios ici si tu veux !
-                    ];
+    {
+        title: "La Cantine Connectée",
+        description: "Une startup propose de 'moderniser' la cantine avec un système de paiement et de réservation par badge RFID, lié à une application mobile pour les parents.",
+        choices: [
+            {
+                text: "Adopter la solution. C'est pratique pour suivre les consommations.",
+                impactText: "Les données alimentaires des enfants sont stockées sur un cloud privé. Des frais de service s'appliquent.",
+                cost: 200,
+                ecoImpact: -5,
+                libreImpact: -15
+            },
+            {
+                text: "Développer un système simple avec des cartes et un tableur partagé en interne.",
+                impactText: "C'est moins 'sexy', mais les données restent à l'école et ça ne coûte rien.",
+                cost: 20,
+                ecoImpact: +5,
+                libreImpact: +10
+            }
+        ]
+    },
+    {
+        title: "Le Fossé Numérique",
+        description: "Plusieurs élèves n'ont pas d'ordinateur à la maison. Une fondation partenaire d'un GAFAM propose des tablettes reconditionnées, mais verrouillées sur leur écosystème.",
+        choices: [
+            {
+                text: "Accepter les tablettes. C'est mieux que rien pour ces élèves.",
+                impactText: "Les élèves sont enfermés dans un écosystème et leurs données sont collectées.",
+                cost: 0,
+                ecoImpact: +5, // Reconditionné
+                libreImpact: -20
+            },
+            {
+                text: "Lancer un atelier de reconditionnement de PC avec une association locale.",
+                impactText: "Formateur pour les élèves, promeut l'économie circulaire et installe des systèmes libres.",
+                cost: 250, // Achat de pièces
+                ecoImpact: +25,
+                libreImpact: +20
+            }
+        ]
+    },
+    {
+        title: "Les Caméras de Surveillance",
+        description: "Suite à des dégradations mineures, des parents d'élèves demandent l'installation de caméras de surveillance 'intelligentes' dans les couloirs et la cour.",
+        choices: [
+            {
+                text: "Installer les caméras cloud avec IA. La sécurité avant tout.",
+                impactText: "L'école devient un lieu de surveillance. Les données sont analysées par des algorithmes opaques.",
+                cost: 1200,
+                ecoImpact: -10,
+                libreImpact: -35
+            },
+            {
+                text: "Refuser et lancer un dialogue avec élèves et parents sur le respect du lieu.",
+                impactText: "Privilégier l'humain et l'éducation à la surveillance technologique. C'est un pari sur la confiance.",
+                cost: 0,
+                ecoImpact: +10,
+                libreImpact: +15
+            }
+        ]
+    },
+    {
+        title: "La Plateforme de Communication",
+        description: "Pour faciliter la communication entre enseignants, parents et élèves, on vous suggère d'adopter une plateforme 'tout-en-un' très populaire, mais propriétaire.",
+        choices: [
+            {
+                text: "Adopter la plateforme populaire. Tout le monde l'utilise déjà.",
+                impactText: "Les conversations, notes et données des élèves sont hébergées et analysées par un tiers.",
+                cost: 300, // Coût de licence annuel
+                ecoImpact: -5,
+                libreImpact: -20
+            },
+            {
+                text: "Mettre en place un serveur auto-hébergé avec une solution libre comme Matrix ou Nextcloud.",
+                impactText: "Contrôle total des données, pas de frais de licence, mais demande une petite maintenance.",
+                cost: 100, // Coût du matériel/serveur
+                ecoImpact: +5,
+                libreImpact: +25
+            }
+        ]
+    },
+    {
+        title: "Le Logiciel Éducatif",
+        description: "Un nouvel outil d'apprentissage des langues fait fureur. Il est basé sur un abonnement mensuel par élève et utilise l'IA pour 'personnaliser' les parcours.",
+        choices: [
+            {
+                text: "Souscrire à l'abonnement pour tous les élèves. Il faut être à la pointe !",
+                impactText: "Très cher à long terme. Les progrès des élèves sont une mine d'or pour l'entreprise.",
+                cost: 500,
+                ecoImpact: -5,
+                libreImpact: -15
+            },
+            {
+                text: "Utiliser des applications libres et gratuites (comme Anki, Moodle) et former les enseignants.",
+                impactText: "Moins de 'paillettes', mais tout aussi efficace et respectueux des données.",
+                cost: 50, // Temps de formation
+                ecoImpact: +10,
+                libreImpact: +15
+            }
+        ]
+    },
+    {
+        title: "Réparation et Maintenance",
+        description: "Plusieurs ordinateurs de la salle informatique sont en panne. Le fabricant propose un devis de réparation exorbitant, presque le prix du neuf.",
+        choices: [
+            {
+                text: "Payer le fabricant pour les réparations. C'est la procédure standard.",
+                impactText: "Le coût est élevé et cela renforce le monopole du fabricant sur la réparation.",
+                cost: 700,
+                ecoImpact: -10,
+                libreImpact: -10
+            },
+            {
+                text: "Créer un 'Repair Café' à l'école avec des parents et des associations locales.",
+                impactText: "Pédagogique, économique, et crée du lien social. Vive la débrouille !",
+                cost: 100, // Achat de composants
+                ecoImpact: +20,
+                libreImpact: +10
+            }
+        ]
+    },
+    {
+        title: "Sobriété vs Gaspillage",
+        description: "Le conseil d'école veut 'moderniser' l'image de l'établissement en installant des écrans 4K connectés dans le hall d'entrée qui tourneront 24h/24.",
+        choices: [
+            {
+                text: "Installer les écrans pour faire 'moderne'.",
+                impactText: "Grosse consommation électrique inutile.",
+                cost: 800,
+                ecoImpact: -25,
+                libreImpact: 0
+            },
+            {
+                text: "Refuser : Sensibiliser à la sobriété numérique.",
+                impactText: "L'argent est mieux investi dans des projets pédagogiques.",
+                cost: 0,
+                ecoImpact: +15,
+                libreImpact: +5
+            }
+        ]
+    }
+];
 
 /* =========================================
    MOTEUR DU JEU
@@ -240,7 +359,7 @@ function animateValue(element, value, isPercentage = false) {
         element.style.color = value > current ? 'var(--accent-green)' : 'var(--accent-red)';
         setTimeout(() => element.style.color = 'inherit', 500);
     }
-    element.innerText = value;
+    element.innerText = value + (isPercentage ? '%' : '');
 }
 
 els.btnResetSave.onclick = resetGame;
