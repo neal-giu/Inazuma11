@@ -43,6 +43,66 @@ const scenarios = [
                     }
                     ]
                     },
+    {
+        title: "Le Projecteur 'Intelligent'",
+        description: "Pour 'moderniser' les salles, on vous propose un vidéoprojecteur 'intelligent' avec OS intégré et assistant vocal. Il est plus cher et sa durée de vie est limitée par son logiciel.",
+        choices: [
+            {
+                text: "Acheter ce projecteur 'smart'. C'est tendance !",
+                impactText: "Cher, collecte des données, et sera obsolète dans 3 ans. Pas très 'smart'.",
+                cost: 600,
+                ecoImpact: -15,
+                libreImpact: -10
+            },
+            {
+                text: "Acheter un projecteur 'idiot' et y brancher un nano-ordinateur avec un OS libre.",
+                impactText: "Moins cher, durable, réparable et ne vous espionne pas. La vraie intelligence !",
+                cost: 300,
+                ecoImpact: +10,
+                libreImpact: +15
+            }
+        ]
+    },
+    {
+        title: "Le Site Web de l'École",
+        description: "Une grosse entreprise propose de refaire 'gratuitement' le site de l'école avec leur outil facile. En échange : des publicités et l'analyse des données des visiteurs.",
+        choices: [
+            {
+                text: "Accepter l'offre 'gratuite'. C'est simple et sans effort.",
+                impactText: "Le site sera lent, plein de pubs et vos visiteurs seront pistés. L'image de l'école en prend un coup.",
+                cost: 0,
+                ecoImpact: -5,
+                libreImpact: -20
+            },
+            {
+                text: "Garder le site actuel, hébergé localement, et former un enseignant.",
+                impactText: "Vous gardez le contrôle, soutenez l'économie locale et protégez vos visiteurs.",
+                cost: 150, // Coût de la formation
+                ecoImpact: +5,
+                libreImpact: +20
+            }
+        ]
+    },
+    {
+        title: "La Formation des Enseignants",
+        description: "Un géant du logiciel offre une journée de formation 'gratuite' à vos enseignants sur sa suite bureautique. L'inspection académique vous y incite fortement.",
+        choices: [
+            {
+                text: "Accepter. C'est une formation gratuite et validée par la hiérarchie.",
+                impactText: "Les enseignants ne connaîtront que cet écosystème et y deviendront dépendants.",
+                cost: 0,
+                ecoImpact: 0,
+                libreImpact: -25
+            },
+            {
+                text: "Refuser et financer une formation aux outils libres et souverains (La Forge, etc.).",
+                impactText: "Un investissement pour une compétence durable et une vraie souveraineté numérique.",
+                cost: 400,
+                ecoImpact: +5,
+                libreImpact: +25
+            }
+        ]
+    },
                     {
                         title: "Sobriété vs Gaspillage",
                             description: "Le conseil d'école veut 'moderniser' l'image de l'établissement en installant des écrans 4K connectés dans le hall d'entrée qui tourneront 24h/24.",
