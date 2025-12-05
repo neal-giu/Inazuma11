@@ -313,4 +313,11 @@ window.addEventListener('load', () => {
     document.querySelector('footer').appendChild(badge);
 });
 
-updateDisplay();
+// Initialisation du jeu
+function init() {
+    applyMode(); // Applique le mode éco au chargement
+    updateDisplay(); // Affiche le premier scénario
+}
+
+// Lancer le jeu une fois que le DOM est entièrement chargé
+window.addEventListener('DOMContentLoaded', init);
