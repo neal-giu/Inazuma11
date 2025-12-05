@@ -1,4 +1,6 @@
 /* ================= DONNÉES DU JEU ================= */
+
+
 const realSources = [
     { type: "📺", text: "Reportage France 3 : Windows 11 et l'alternative Libre", url: "https://video.echirolles.fr/w/hVykGUtRZqRen6eiutqRvQ" },
     { type: "📻", text: "France Inter : Obsolescence et Logiciel Libre", url: "https://www.radiofrance.fr/franceinter/podcasts/le-grand-reportage-de-france-inter/le-grand-reportage-du-mardi-14-octobre-2025-4136495" },
@@ -289,45 +291,65 @@ window.addEventListener('load', () => {
 });
 
 /* ================= ARBRE DE VISUALISATION ================= */
+/* ================= ARBRE DE VISUALISATION (CORRIGÉ) ================= */
+/* ================= VISUALISATION : SYSTEM LOG (TIMELINE) ================= */
 function generateFlowchart() {
     const container = document.getElementById('flowchart-container');
-    container.innerHTML = '<h2>Arbre de votre parcours</h2>';
+    container.innerHTML = '<h2>📜 Journal de Connexion (Trace Route)</h2>';
     container.classList.remove('hidden');
 
-    const nodes = {};
-    const edges = [];
+    // On crée un conteneur pour la timeline
+    const timeline = document.createElement('div');
+    timeline.className = 'timeline-container';
 
-    // Créer tous les nœuds
-    for (const key in scenarios) {
-        nodes[key] = { id: key, label: scenarios[key].title, visited: gameState.path.includes(key) };
-        if (scenarios[key].choices) {
-            scenarios[key].choices.forEach(choice => {
-                edges.push({ from: key, to: choice.next });
+    // Parcours du chemin emprunté par le joueur
+    gameState.path.forEach((stepId, index) => {
+        const scenario = scenarios[stepId];
+        if (!scenario) return;
+
+        // Création de l'étape
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'timeline-step';
+
+        // Retrouver quel choix a été fait pour arriver à l'étape SUIVANTE
+        let chosenChoiceIndex = -1;
+        const nextStepId = gameState.path[index + 1]; // L'ID de la prochaine étape
+
+        if (nextStepId && scenario.choices) {
+            chosenChoiceIndex = scenario.choices.findIndex(c => c.next === nextStepId);
+        }
+
+        // HTML de l'étape
+        let html = `
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+                <h3 class="timeline-title">${scenario.title}</h3>
+                <div class="timeline-choices-list">
+        `;
+
+        // Affichage des choix (Pris vs Non pris)
+        if (scenario.choices) {
+            scenario.choices.forEach((choice, i) => {
+                const isTaken = (i === chosenChoiceIndex);
+                const statusClass = isTaken ? 'choice-taken' : 'choice-ignored';
+                const statusIcon = isTaken ? '✅' : '❌';
+
+                html += `
+                    <div class="timeline-choice ${statusClass}">
+                        <span class="choice-icon">${statusIcon}</span>
+                        <span class="choice-text">${choice.text}</span>
+                        ${isTaken ? '<span class="choice-tag">DÉCISION VALIDÉE</span>' : ''}
+                    </div>
+                `;
             });
         }
-    }
 
-    // Construire l'arbre HTML
-    const buildBranch = (nodeId, level = 0) => {
-        const node = nodes[nodeId];
-        if (!node) return '';
+        html += `</div></div>`;
+        stepDiv.innerHTML = html;
+        timeline.appendChild(stepDiv);
+    });
 
-        let html = `<div class="flow-node-container" style="margin-left: ${level * 20}px;">`;
-        html += `<div class="flow-node ${node.visited ? 'visited' : ''}">${node.label}</div>`;
-        
-        const children = edges.filter(edge => edge.from === nodeId);
-        if (children.length > 0) {
-            html += '<div class="flow-branch">';
-            children.forEach(childEdge => {
-                html += buildBranch(childEdge.to, level + 1);
-            });
-            html += '</div>';
-        }
-        html += `</div>`;
-        return html;
-    };
-
-    container.innerHTML += buildBranch('start');
+    container.appendChild(timeline);
 }
 
 
