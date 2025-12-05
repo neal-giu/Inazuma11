@@ -437,3 +437,19 @@ body.eco-mode h1, body.eco-mode h2, body.eco-mode span {
     from { opacity: 0; transform: translateX(-20px); }
     to { opacity: 1; transform: translateX(0); }
 }
+/* Animation des stats flottantes */
+.floating-stat {
+    position: absolute;
+    font-weight: bold;
+    font-size: 1.5rem;
+    pointer-events: none; /* Pour cliquer au travers */
+    z-index: 9999;
+    text-shadow: 0 0 5px #000;
+    transform: translate(-50%, 0); /* Centrer par rapport au point d'origine */
+    animation: floatUp 1s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50px) scale(1.2); }
+}

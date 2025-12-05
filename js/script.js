@@ -1,6 +1,5 @@
 /* ================= DONNÉES DU JEU ================= */
 
-
 const realSources = [
     { type: "📺", text: "Reportage France 3 : Windows 11 et l'alternative Libre", url: "https://video.echirolles.fr/w/hVykGUtRZqRen6eiutqRvQ" },
     { type: "📻", text: "France Inter : Obsolescence et Logiciel Libre", url: "https://www.radiofrance.fr/franceinter/podcasts/le-grand-reportage-de-france-inter/le-grand-reportage-du-mardi-14-octobre-2025-4136495" },
@@ -15,7 +14,7 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 let audioCtx;
 
 function playSound(type = 'click') {
-    if (isEco || !audioCtx) return; 
+    if (isEco || !audioCtx) return;
 
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
@@ -50,8 +49,39 @@ function initAudio() {
 document.body.addEventListener('click', initAudio, { once: true });
 
 
+/* ================= OUTILS VISUELS (Le Juice 🥤) ================= */
+// Fonction ajoutée pour gérer les animations de +10 / -50€
+function showFloatingText(targetId, change, unit) {
+    if (change === 0) return; // Si pas de changement, on ne fait rien
+
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    // On récupère la position de l'icône
+    const rect = target.getBoundingClientRect();
+
+    // On crée l'élément flottant
+    const el = document.createElement('div');
+    const sign = change > 0 ? "+" : "";
+    el.innerText = `${sign}${change}${unit}`;
+    el.className = 'floating-stat'; // Assure-toi d'avoir ajouté le CSS correspondant
+
+    // Positionnement précis
+    el.style.left = (rect.left + rect.width / 2) + 'px';
+    el.style.top = (rect.top + window.scrollY) + 'px';
+
+    // Vert si positif, Rouge si négatif
+    el.style.color = change > 0 ? '#00ff99' : '#ff3333';
+
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1000);
+}
+
+
 /* ================= MOTEUR DE JEU ================= */
+
 function updateDisplay() {
+
     localStorage.setItem('save', JSON.stringify(gameState));
 
     const budgetSpan = document.getElementById('score-budget');
@@ -100,6 +130,13 @@ function updateDisplay() {
 
         btn.onclick = () => {
             playSound('choice');
+
+            // --- APPEL DE L'ANIMATION VISUELLE (JUICE) ---
+            showFloatingText('score-budget', -choice.cost, '€');
+            showFloatingText('score-eco', choice.eco, '%');
+            showFloatingText('score-libre', choice.libre, '%');
+            // ---------------------------------------------
+
             gameState.budget -= choice.cost;
             gameState.eco += choice.eco;
             gameState.libre += choice.libre;
@@ -125,7 +162,7 @@ function endGame(title, description) {
     resourcesHTML += "</ul></div>";
 
     document.getElementById('end-game-message').innerHTML = `<strong>${title}</strong><br>${description}<br><br>Budget: ${gameState.budget} | Eco: ${gameState.eco}% | Libre: ${gameState.libre}%` + resourcesHTML;
-    
+
     generateFlowchart();
     localStorage.removeItem('save');
 }
@@ -249,7 +286,7 @@ laserBtn.onclick = () => {
     area.classList.remove('hidden');
     laserScore = 0;
     area.innerHTML = `<h2 style="color:red;text-shadow:0 0 10px red">💥 NETTOYAGE NUMÉRIQUE 💥</h2><div style="font-size:2rem;margin-bottom:20px">Score: <span id="l-score">0</span></div><button id="l-quit" style="position:absolute;top:20px;right:20px;background:red;border:none;color:white;padding:10px;cursor:pointer;">QUITTER</button>`;
-    
+
     document.getElementById('l-quit').onclick = () => {
         playSound();
         clearInterval(laserInterval);
@@ -290,8 +327,6 @@ window.addEventListener('load', () => {
     document.querySelector('footer').appendChild(badge);
 });
 
-/* ================= ARBRE DE VISUALISATION ================= */
-/* ================= ARBRE DE VISUALISATION (CORRIGÉ) ================= */
 /* ================= VISUALISATION : SYSTEM LOG (TIMELINE) ================= */
 function generateFlowchart() {
     const container = document.getElementById('flowchart-container');
