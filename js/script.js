@@ -50,17 +50,77 @@ const scenarios = {
 
 let gameState = JSON.parse(localStorage.getItem('save')) || { budget: 2000, eco: 50, libre: 20, current: 'start', over: false };
 
+/* ================= AMÉLIORATIONS AUDIOVISUELLES ================= */
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function playSound(type = 'click') {
+    if (isEco || !audioCtx) return; 
+
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    if (type === 'click') {
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(120, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+    } else if (type === 'choice') {
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(220, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    }
+
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + 0.3);
+}
+
+function initAudio() {
+    if (!audioCtx) {
+        try {
+            audioCtx = new AudioContext();
+        } catch(e) {
+            console.error("Web Audio API is not supported in this browser.");
+        }
+    }
+}
+document.body.addEventListener('click', initAudio, { once: true });
+
+
 /* ================= MOTEUR DE JEU ================= */
 function updateDisplay() {
     localStorage.setItem('save', JSON.stringify(gameState));
-    document.getElementById('score-budget').innerText = gameState.budget;
-    document.getElementById('score-eco').innerText = gameState.eco + "%";
-    document.getElementById('score-libre').innerText = gameState.libre + "%";
+
+    const budgetSpan = document.getElementById('score-budget');
+    const ecoSpan = document.getElementById('score-eco');
+    const libreSpan = document.getElementById('score-libre');
+
+    const stats = { budget: budgetSpan, eco: ecoSpan, libre: libreSpan };
+    for (const key in stats) {
+        const span = stats[key];
+        const newValue = gameState[key] + (key !== 'budget' ? '%' : '');
+        if (span.innerText !== newValue) {
+            span.classList.add('stat-updated');
+            setTimeout(() => span.classList.remove('stat-updated'), 1000);
+        }
+    }
+
+    budgetSpan.innerText = gameState.budget;
+    ecoSpan.innerText = gameState.eco + "%";
+    libreSpan.innerText = gameState.libre + "%";
 
     if (gameState.budget <= 0 && !gameState.over) return endGame(false, "Faillite !");
 
     const scenar = scenarios[gameState.current];
     if (!scenar || gameState.current === 'end') return endGame(true, "Mission Terminée !");
+
+    const scenarioCard = document.getElementById('scenario-card');
+    scenarioCard.classList.remove('card-animated');
+    void scenarioCard.offsetWidth; // Force reflow
+    scenarioCard.classList.add('card-animated');
 
     document.getElementById('scenario-title').innerText = scenar.title;
     document.getElementById('scenario-description').innerText = scenar.description;
@@ -75,6 +135,7 @@ function updateDisplay() {
         else btn.className = 'choice-btn-neutral';
 
         btn.onclick = () => {
+            playSound('choice');
             gameState.budget -= choice.cost;
             gameState.eco += choice.eco;
             gameState.libre += choice.libre;
@@ -88,7 +149,9 @@ function updateDisplay() {
 function endGame(victory, msg) {
     gameState.over = true;
     document.getElementById('scenario-card').classList.add('hidden');
-    document.getElementById('end-game-card').classList.remove('hidden');
+    const endCard = document.getElementById('end-game-card');
+    endCard.classList.remove('hidden');
+    endCard.classList.add('card-animated');
 
     let resourcesHTML = `<div style="margin-top:20px;border-top:1px dashed #666;padding-top:10px"><h3>📚 Sources Réelles (Sujet NIRD) :</h3><ul style="list-style:none;padding:0">`;
     realSources.forEach(s => resourcesHTML += `<li style="margin-bottom:5px">${s.type} <a href="${s.url}" target="_blank" style="color:var(--neon-blue)">${s.text}</a></li>`);
@@ -98,8 +161,8 @@ function endGame(victory, msg) {
     localStorage.removeItem('save');
 }
 
-document.getElementById('btn-reset-save').onclick = () => { localStorage.removeItem('save'); location.reload(); };
-document.getElementById('btn-end-reset').onclick = () => location.reload();
+document.getElementById('btn-reset-save').onclick = () => { playSound(); localStorage.removeItem('save'); location.reload(); };
+document.getElementById('btn-end-reset').onclick = () => { playSound(); location.reload(); };
 
 /* ================= DÉFI 482 : MODE ÉCO ================= */
 const ecoBtn = document.getElementById('btn-eco-mode');
@@ -109,6 +172,7 @@ function toggleMode() {
     isEco = !isEco;
     localStorage.setItem('modeEco', isEco);
     applyMode();
+    playSound();
 }
 
 function applyMode() {
@@ -121,13 +185,9 @@ function applyMode() {
     }
 }
 ecoBtn.onclick = toggleMode;
-applyMode();
 
 /* ================= DÉFI 514 : IA LOW-COST (FR / AR) ================= */
-// État de la langue
 let currentLang = 'fr';
-
-// Dictionnaire bilingue
 const botDictionary = {
     fr: {
         subtitle: "Assistant optimisé pour les zones à faible connexion.",
@@ -144,84 +204,45 @@ const botDictionary = {
         unknown: "لا أعرف هذه الخدمة. جرب: كاف، ضرائب، صحة، لينكس..."
     }
 };
-
 const botData = [
-    {
-        key: ["caf", "aide", "apl", "كاف", "مساعدة"],
-        respFr: "🏛️ SERVICE PUBLIC - CAF :\nPas d'internet ? Utilisez les bornes interactives en mairie ou l'application mobile.",
-        respAr: "🏛️ الخدمة العامة - كاف:\nلا يوجد إنترنت؟ استخدم المحطات التفاعلية في البلدية أو تطبيق الهاتف المحمول."
-    },
-    {
-        key: ["linux", "windows", "لينكس", "ويندوز"],
-        respFr: "🐧 LINUX :\nUn système libre qui prolonge la vie des ordinateurs de 5 à 10 ans.",
-        respAr: "🐧 لينكس:\nنظام حر يطيل عمر أجهزة الكمبيوتر من 5 إلى 10 سنوات."
-    },
-    {
-        key: ["libre", "open source", "حر", "مفتوح المصدر"],
-        respFr: "✊ LOGICIEL LIBRE :\nGarantit l'indépendance de l'école et protège les données.",
-        respAr: "✊ البرمجيات الحرة:\nتضمن استقلالية المدرسة وتحمي البيانات."
-    },
-    {
-        key: ["nird", "responsable", "نيرد", "مسؤول"],
-        respFr: "🌱 NIRD :\nNumérique Inclusif, Responsable et Durable.",
-        respAr: "🌱 NIRD:\nرقمي شامل ومسؤول ومستدام."
-    },
-    {
-        key: ["impot", "taxe", "ضرائب", "ضريبة"],
-        respFr: "🏛️ IMPÔTS :\nLe formulaire papier 2042 est disponible sur demande.",
-        respAr: "🏛️ الضرائب:\nنموذج الورق 2042 متاح عند الطلب."
-    },
-    {
-        key: ["sante", "ameli", "vitale", "صحة", "تأمين"],
-        respFr: "🏛️ SANTÉ / AMELI :\nEn zone blanche, mettez à jour votre carte vitale en pharmacie.",
-        respAr: "🏛️ الصحة:\nفي المناطق المعزولة، قم بتحديث بطاقتك الصحية في الصيدلية."
-    }
+    { key: ["caf", "aide", "apl", "كاف", "مساعدة"], respFr: "🏛️ SERVICE PUBLIC - CAF :\nPas d'internet ? Utilisez les bornes interactives en mairie ou l'application mobile.", respAr: "🏛️ الخدمة العامة - كاف:\nلا يوجد إنترنت؟ استخدم المحطات التفاعلية في البلدية أو تطبيق الهاتف المحمول." },
+    { key: ["linux", "windows", "لينكس", "ويندوز"], respFr: "🐧 LINUX :\nUn système libre qui prolonge la vie des ordinateurs de 5 à 10 ans.", respAr: "🐧 لينكس:\nنظام حر يطيل عمر أجهزة الكمبيوتر من 5 إلى 10 سنوات." },
+    { key: ["libre", "open source", "حر", "مفتوح المصدر"], respFr: "✊ LOGICIEL LIBRE :\nGarantit l'indépendance de l'école et protège les données.", respAr: "✊ البرمجيات الحرة:\nتضمن استقلالية المدرسة وتحمي البيانات." },
+    { key: ["nird", "responsable", "نيرد", "مسؤول"], respFr: "🌱 NIRD :\nNumérique Inclusif, Responsable et Durable.", respAr: "🌱 NIRD:\nرقمي شامل ومسؤول ومستدام." },
+    { key: ["impot", "taxe", "ضرائب", "ضريبة"], respFr: "🏛️ IMPÔTS :\nLe formulaire papier 2042 est disponible sur demande.", respAr: "🏛️ الضرائب:\nنموذج الورق 2042 متاح عند الطلب." },
+    { key: ["sante", "ameli", "vitale", "صحة", "تأمين"], respFr: "🏛️ SANTÉ / AMELI :\nEn zone blanche, mettez à jour votre carte vitale en pharmacie.", respAr: "🏛️ الصحة:\nفي المناطق المعزولة، قم بتحديث بطاقتك الصحية في الصيدلية." }
 ];
 
-// Fonction de bascule langue
 document.getElementById('btn-lang-switch').onclick = () => {
+    playSound();
     currentLang = currentLang === 'fr' ? 'ar' : 'fr';
     const texts = botDictionary[currentLang];
-
     document.getElementById('ia-subtitle').innerText = texts.subtitle;
     document.getElementById('user-question').placeholder = texts.placeholder;
     document.getElementById('btn-ask-bot').innerText = texts.btnAsk;
     document.getElementById('bot-response').innerText = texts.welcome;
-
-    // Direction du texte (RTL pour Arabe)
     document.getElementById('assistant-ia').style.direction = currentLang === 'ar' ? 'rtl' : 'ltr';
 };
 
-// Fuzzy Logic (Offline)
 function levenshtein(a, b) {
-    if (a.length === 0) return b.length;
-    if (b.length === 0) return a.length;
-    const matrix = [];
-    for (let i = 0; i <= b.length; i++) {
-        matrix[i] = [i];
-    }
-    for (let j = 0; j <= a.length; j++) {
-        matrix[0][j] = j;
-    }
+    if (a.length === 0) return b.length; if (b.length === 0) return a.length;
+    const matrix = Array.from(Array(b.length + 1), (_, i) => [i]);
+    for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
     for (let i = 1; i <= b.length; i++) {
         for (let j = 1; j <= a.length; j++) {
-            if (b.charAt(i - 1) === a.charAt(j - 1)) {
-                matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-                matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
-            }
+            const cost = b.charAt(i - 1) === a.charAt(j - 1) ? 0 : 1;
+            matrix[i][j] = Math.min(matrix[i - 1][j - 1] + cost, matrix[i][j - 1] + 1, matrix[i - 1][j] + 1);
         }
     }
     return matrix[b.length][a.length];
 }
 
 document.getElementById('btn-ask-bot').onclick = () => {
+    playSound();
     const q = document.getElementById('user-question').value.toLowerCase().trim();
-    if(!q) return;
+    if (!q) return;
 
-    let best = null;
-    let minDid = 99;
-
+    let best = null, minDid = 99;
     botData.forEach(d => {
         d.key.forEach(k => {
             if (q.includes(k)) { best = d; minDid = 0; }
@@ -231,48 +252,37 @@ document.getElementById('btn-ask-bot').onclick = () => {
     });
 
     const respBox = document.getElementById('bot-response');
-    const texts = botDictionary[currentLang];
-
     respBox.innerHTML = "<i>...</i>";
     setTimeout(() => {
-        if(best) {
-            respBox.innerText = currentLang === 'fr' ? best.respFr : best.respAr;
-        } else {
-            respBox.innerText = texts.unknown;
-        }
+        respBox.innerText = best ? (currentLang === 'fr' ? best.respFr : best.respAr) : botDictionary[currentLang].unknown;
     }, 400);
 };
 
 /* ================= DÉFI 508 : CONTRIBUTION RSE (Numih France) ================= */
-// On permet à l'utilisateur de "Contribuer" (RSE by Design)
 document.getElementById('btn-rse-contrib').onclick = () => {
+    playSound();
     const idea = prompt("💡 DÉFI RSE (Défi 508)\nProposez une idée éthique pour améliorer l'école :");
     if (idea) {
         alert("✅ Merci ! Votre proposition : \"" + idea + "\" a été enregistrée dans la démarche citoyenne de l'établissement.\n\nBonus : +10% de Cohésion Sociale !");
-        gameState.libre += 10; // Récompense in-game
-        gameState.libre = Math.min(100, gameState.libre);
+        gameState.libre = Math.min(100, gameState.libre + 10);
         updateDisplay();
     }
 };
 
 /* ================= DÉFI 509 : LASER GAME ================= */
 const laserBtn = document.getElementById('btn-laser-game');
-let laserScore = 0;
-let laserInterval = null;
+let laserScore = 0, laserInterval = null;
 const targets = ['👾', '🍪', '☁️', '🤖', '👁️'];
 
 laserBtn.onclick = () => {
+    playSound();
     const area = document.getElementById('laser-game-area');
     area.classList.remove('hidden');
     laserScore = 0;
-
-    area.innerHTML = `
-        <h2 style="color:red;text-shadow:0 0 10px red">💥 NETTOYAGE NUMÉRIQUE 💥</h2>
-        <div style="font-size:2rem;margin-bottom:20px">Score: <span id="l-score">0</span></div>
-        <button id="l-quit" style="position:absolute;top:20px;right:20px;background:red;border:none;color:white;padding:10px;cursor:pointer;">QUITTER</button>
-    `;
-
+    area.innerHTML = `<h2 style="color:red;text-shadow:0 0 10px red">💥 NETTOYAGE NUMÉRIQUE 💥</h2><div style="font-size:2rem;margin-bottom:20px">Score: <span id="l-score">0</span></div><button id="l-quit" style="position:absolute;top:20px;right:20px;background:red;border:none;color:white;padding:10px;cursor:pointer;">QUITTER</button>`;
+    
     document.getElementById('l-quit').onclick = () => {
+        playSound();
         clearInterval(laserInterval);
         area.classList.add('hidden');
     };
@@ -286,15 +296,13 @@ laserBtn.onclick = () => {
             laserScore += 100;
             document.getElementById('l-score').innerText = laserScore;
             el.innerText = "💥";
-            const AudioContext = window.AudioContext || window['webkitAudioContext'];
-            if (AudioContext) {
-                const ac = new AudioContext();
-                const o = ac.createOscillator();
+            if (audioCtx) {
+                const o = audioCtx.createOscillator();
                 o.type = 'square';
                 o.frequency.value = 150;
-                o.connect(ac.destination);
+                o.connect(audioCtx.destination);
                 o.start();
-                o.stop(ac.currentTime + 0.1);
+                o.stop(audioCtx.currentTime + 0.1);
             }
             setTimeout(() => el.remove(), 200);
         };
@@ -313,11 +321,9 @@ window.addEventListener('load', () => {
     document.querySelector('footer').appendChild(badge);
 });
 
-// Initialisation du jeu
 function init() {
-    applyMode(); // Applique le mode éco au chargement
-    updateDisplay(); // Affiche le premier scénario
+    applyMode();
+    updateDisplay();
 }
 
-// Lancer le jeu une fois que le DOM est entièrement chargé
 window.addEventListener('DOMContentLoaded', init);

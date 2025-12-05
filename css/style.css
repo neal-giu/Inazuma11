@@ -14,6 +14,32 @@
     --scanlines: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.3) 3px, rgba(0,0,0,0.3) 4px);
 }
 
+/* --- Animations --- */
+@keyframes neon-glow {
+    from {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(0, 234, 255, 0.5);
+    }
+    to {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(0, 234, 255, 0.8);
+    }
+}
+
+@keyframes card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-animated {
+    animation: card-enter 0.5s ease-out forwards;
+}
+
+
 body {
     font-family: var(--font-main), sans-serif;
     color: var(--text-light);
@@ -73,10 +99,14 @@ h1 {
     box-shadow: 0 0 20px rgba(0, 234, 255, 0.15);
 }
 
-.stat-item span { font-size: 2rem; color: #fff; }
+.stat-item span { font-size: 2rem; color: #fff; transition: text-shadow 0.3s ease; }
 #score-budget { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
 #score-eco { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
 #score-libre { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+
+.stat-updated {
+    animation: neon-glow 0.5s alternate 2;
+}
 
 /* --- CARTES --- */
 #scenario-card, #end-game-card, #assistant-ia {
@@ -124,10 +154,16 @@ button {
 button:hover {
     transform: translateY(-3px);
     background-color: rgba(0, 234, 255, 0.15);
-    box-shadow: 0 0 15px rgba(0, 234, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 234, 255, 0.6);
     color: #fff;
     border-color: #fff;
 }
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 5px rgba(0, 234, 255, 0.4);
+}
+
 
 button strong { display: block; font-size: 1.6rem; margin-bottom: 5px; }
 button small { font-family: var(--font-main), sans-serif; font-size: 1rem; color: #ccc; text-transform: none; }
