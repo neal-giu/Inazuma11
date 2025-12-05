@@ -1,0 +1,160 @@
+{
+    "start": {
+        "title": "Le Choc de l'Obsolescence",
+        "description": "Microsoft arrête le support de Windows 10. Vos 200 PC deviennent obsolètes.",
+        "choices": [
+            { "text": "Acheter 200 PC Windows 11", "impactText": "Coût: 1500€ | Écologie: -30", "cost": 1500, "eco": -30, "libre": -10, "next": "gafam" },
+            { "text": "Installer Linux Mint", "impactText": "Coût: 100€ | Écologie: +40", "cost": 100, "eco": 40, "libre": 30, "next": "linux_party" }
+        ]
+    },
+    "gafam": {
+        "title": "L'Offre Empoisonnée",
+        "description": "Goliath Corp offre des tablettes gratuites en échange des données élèves.",
+        "choices": [
+            { "text": "Accepter (C'est gratuit !)", "impactText": "Liberté: -40 | Vie privée: 0", "cost": 0, "eco": -10, "libre": -40, "next": "data_leak" },
+            { "text": "Refuser et résister", "impactText": "On garde nos vieux PC.", "cost": 0, "eco": 10, "libre": 20, "next": "prof_training" }
+        ]
+    },
+    "linux_party": {
+        "title": "L'Install Party",
+        "description": "Les parents veulent apprendre à installer Linux chez eux. C'est un succès !",
+        "choices": [
+            { "text": "Capitaliser sur cet élan communautaire", "impactText": "Cohésion sociale maximale.", "cost": 50, "eco": 10, "libre": 20, "next": "prof_training" },
+            { "text": "Négliger la suite, le plus dur est fait", "impactText": "Occasion manquée.", "cost": 0, "eco": 0, "libre": -5, "next": "digital_divide" }
+        ]
+    },
+    "prof_training": {
+        "title": "La Formation des Profs",
+        "description": "Les professeurs ne sont pas tous à l'aise avec les nouveaux outils (Linux / Cloud).",
+        "choices": [
+            { "text": "Formation interne par les pairs", "impactText": "Renforce la cohésion.", "cost": 100, "eco": 5, "libre": 15, "next": "hardware_failure" },
+            { "text": "Formation par un prestataire externe", "impactText": "Plus cher mais plus pro.", "cost": 500, "eco": 0, "libre": -5, "next": "site_web" },
+            { "text": "Pas de formation, ils se débrouilleront", "impactText": "Risque de rejet.", "cost": 0, "eco": -5, "libre": -10, "next": "teacher_resistance" }
+        ]
+    },
+    "teacher_resistance": {
+        "title": "La Résistance des Profs",
+        "description": "Sans formation, une partie des enseignants refuse d'utiliser les nouveaux outils, créant une division dans l'école.",
+        "choices": [
+            { "text": "Organiser une session de rattrapage en urgence", "impactText": "Mieux vaut tard que jamais.", "cost": 200, "eco": 0, "libre": 10, "next": "prof_training" },
+            { "text": "Imposer le changement par une note de service", "impactText": "L'autorité avant tout.", "cost": 0, "eco": -5, "libre": -15, "next": "end_bad_community" }
+        ]
+    },
+    "digital_divide": {
+        "title": "La Fracture Numérique",
+        "description": "Des parents se plaignent : certains élèves sans PC à la maison sont pénalisés pour les devoirs.",
+        "choices": [
+            { "text": "Créer un club 'devoirs et entraide' après l'école", "impactText": "Accès pour tous.", "cost": 100, "eco": 5, "libre": 15, "next": "homework_club" },
+            { "text": "Lancer un programme de prêt de PC reconditionnés", "impactText": "L'école à la maison.", "cost": 300, "eco": 10, "libre": 10, "next": "laptop_loan" },
+            { "text": "Répondre que c'est la responsabilité des familles", "impactText": "Le mécontentement grandit.", "cost": 0, "eco": -5, "libre": -15, "next": "end_bad_community" }
+        ]
+    },
+    "homework_club": {
+        "title": "Le Club Devoirs",
+        "description": "Le club après les cours est un succès. Comment le pérenniser ?",
+        "choices": [
+            { "text": "Le faire gérer par des bénévoles (parents, assos)", "impactText": "La communauté s'implique.", "cost": 50, "eco": 5, "libre": 15, "next": "site_web" },
+            { "text": "Demander aux profs de superviser (bénévolement)", "impactText": "Risque de surmenage et de tensions.", "cost": 0, "eco": -5, "libre": -10, "next": "teacher_resistance" }
+        ]
+    },
+    "laptop_loan": {
+        "title": "Le Programme de Prêt",
+        "description": "Vous prêtez des PC reconditionnés aux familles. Comment organiser cela ?",
+        "choices": [
+            { "text": "Mettre en place une charte et un suivi rigoureux", "impactText": "Professionnalisme et confiance.", "cost": 50, "eco": 5, "libre": 5, "next": "site_web" },
+            { "text": "Prêter sur la base de la confiance, sans formalités", "impactText": "Simple, mais risqué.", "cost": 0, "eco": 5, "libre": 10, "next": "laptop_loan_fail" }
+        ]
+    },
+    "laptop_loan_fail": {
+        "title": "Problèmes de Prêt",
+        "description": "Plusieurs PC ne sont pas rendus ou reviennent abîmés. Le programme coûte cher en pertes.",
+        "choices": [
+            { "text": "Arrêter le programme et blâmer le manque de civisme", "impactText": "Rupture de confiance.", "cost": 0, "eco": -10, "libre": -20, "next": "end_bad_community" },
+            { "text": "Absorber les pertes et mettre en place un vrai suivi", "impactText": "Une leçon coûteuse.", "cost": 400, "eco": -5, "libre": -5, "next": "site_web" }
+        ]
+    },
+    "hardware_failure": {
+        "title": "Pannes en Cascade",
+        "description": "Même avec Linux, les vieux PC tombent en panne. Les réparations s'accumulent.",
+        "choices": [
+            { "text": "Lancer une collecte de fonds pour du matériel neuf", "impactText": "Appel à la générosité.", "cost": 50, "eco": 5, "libre": 10, "next": "fundraiser" },
+            { "text": "Cannibaliser 50 PC pour en maintenir 150", "impactText": "Une solution à court terme.", "cost": 0, "eco": 15, "libre": 5, "next": "pc_cannibalism" }
+        ]
+    },
+    "fundraiser": {
+        "title": "La Collecte de Fonds",
+        "description": "Vous organisez un grand événement pour lever des fonds pour l'équipement informatique.",
+        "choices": [
+            { "text": "Succès ! La communauté et les entreprises locales ont été généreuses.", "impactText": "Budget augmenté !", "cost": -1000, "eco": 10, "libre": 20, "next": "site_web" },
+            { "text": "Échec. La somme récoltée est dérisoire.", "impactText": "Déception et statu quo.", "cost": 100, "eco": -5, "libre": -10, "next": "end_bad_community" }
+        ]
+    },
+    "pc_cannibalism": {
+        "title": "Le Cannibalisme",
+        "description": "Vous avez maintenant 150 PC fonctionnels et un stock de pièces détachées. C'est du sursis.",
+        "choices": [
+            { "text": "Mettre en place un atelier de réparation élève/parent", "impactText": "Compétences et durabilité.", "cost": 100, "eco": 20, "libre": 15, "next": "site_web" },
+            { "text": "Gérer les réparations au coup par coup", "impactText": "On verra bien combien de temps ça dure.", "cost": 0, "eco": 5, "libre": -5, "next": "site_web" }
+        ]
+    },
+    "data_leak": {
+        "title": "Scandale de Fuite de Données",
+        "description": "Les données des élèves ont fuité depuis les serveurs de Goliath Corp. C'est un scandale national.",
+        "choices": [
+            { "text": "Communiquer et assumer", "impactText": "Transparence difficile.", "cost": 0, "eco": 0, "libre": 5, "next": "end_bad_privacy" },
+            { "text": "Minimiser l'affaire", "impactText": "La confiance est rompue.", "cost": 0, "eco": -10, "libre": -20, "next": "end_bad_privacy" }
+        ]
+    },
+    "site_web": {
+        "title": "Le Site de l'École",
+        "description": "Il faut refaire le site web. Quelle technologie choisir ?",
+        "choices": [
+            { "text": "Un CMS lourd (Wordpress + Plugins)", "impactText": "Facile mais énergivore.", "cost": 100, "eco": -20, "libre": 0, "next": "cyber_attack" },
+            { "text": "Site statique léger (HTML/CSS)", "impactText": "Green IT validé !", "cost": 200, "eco": 20, "libre": 10, "next": "cyber_attack" }
+        ]
+    },
+    "cyber_attack": {
+        "title": "Cyberattaque !",
+        "description": "Votre nouveau site est la cible d'un ransomware. Les données administratives sont chiffrées et une rançon est demandée.",
+        "choices": [
+            { "text": "Restaurer la dernière sauvegarde (faite hier)", "impactText": "Belle réactivité !", "cost": 50, "eco": 5, "libre": 10, "next": "local_supplier" },
+            { "text": "Payer la rançon en urgence", "impactText": "Très cher et incertain.", "cost": 1000, "eco": -10, "libre": -20, "next": "pay_ransom" }
+        ]
+    },
+    "pay_ransom": {
+        "title": "Rançon Payée",
+        "description": "Vous avez payé. Les pirates ont (heureusement) tenu parole, mais votre budget est amputé et votre réputation est ternie.",
+        "choices": [
+            { "text": "Mettre en place de vraies mesures de sécurité", "impactText": "On ne m'y reprendra plus.", "cost": 200, "eco": 0, "libre": 5, "next": "local_supplier" },
+            { "text": "Espérer que ça n'arrive plus", "impactText": "La politique de l'autruche.", "cost": 0, "eco": -5, "libre": -10, "next": "local_supplier" }
+        ]
+    },
+    "local_supplier": {
+        "title": "Le Fournisseur Local",
+        "description": "Une entreprise locale propose du matériel reconditionné et un support pour Linux.",
+        "choices": [
+            { "text": "Signer un partenariat", "impactText": "Économie circulaire et locale !", "cost": 300, "eco": 30, "libre": 20, "next": "end_good" },
+            { "text": "Rester avec les fournisseurs habituels", "impactText": "On sait ce qu'on a.", "cost": 0, "eco": -10, "libre": -5, "next": "end_neutral" }
+        ]
+    },
+    "end_good": {
+        "title": "FIN : Le Triomphe du Libre",
+        "description": "Grâce à vos choix, l'école est devenue un modèle de numérique durable, éthique et communautaire. Bravo !",
+        "choices": []
+    },
+    "end_neutral": {
+        "title": "FIN : Statu Quo",
+        "description": "Vous avez navigué entre les problèmes, mais sans vraiment embrasser le changement. L'école reste dépendante des GAFAM ou dans une situation précaire.",
+        "choices": []
+    },
+    "end_bad_privacy": {
+        "title": "FIN : La Confiance Brisée",
+        "description": "La fuite de données a durablement entaché la réputation de l'école. Les parents sont furieux et le projet est un échec.",
+        "choices": []
+    },
+    "end_bad_community": {
+        "title": "FIN : La Communauté Fracturée",
+        "description": "Le manque de support et de communication a créé un fossé. Le projet est abandonné face à l'hostilité générale.",
+        "choices": []
+    }
+}

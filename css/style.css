@@ -109,17 +109,18 @@ h1 {
 }
 
 /* --- CARTES --- */
-#scenario-card, #end-game-card, #assistant-ia {
+#scenario-card, #end-game-card, #assistant-ia, #flowchart-container {
     background: linear-gradient(135deg, rgba(20, 20, 34, 0.9) 0%, rgba(31, 31, 51, 0.9) 100%);
     padding: 40px;
     border: 1px solid rgba(255, 0, 255, 0.3);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     position: relative;
     backdrop-filter: blur(5px);
+    margin-top: 30px;
 }
 
-#scenario-card::before, #end-game-card::before { content: ''; position: absolute; top: -2px; left: -2px; width: 30px; height: 30px; border-top: 3px solid var(--neon-pink); border-left: 3px solid var(--neon-pink); }
-#scenario-card::after, #end-game-card::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 30px; height: 30px; border-bottom: 3px solid var(--neon-pink); border-right: 3px solid var(--neon-pink); }
+#scenario-card::before, #end-game-card::before, #flowchart-container::before { content: ''; position: absolute; top: -2px; left: -2px; width: 30px; height: 30px; border-top: 3px solid var(--neon-pink); border-left: 3px solid var(--neon-pink); }
+#scenario-card::after, #end-game-card::after, #flowchart-container::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 30px; height: 30px; border-bottom: 3px solid var(--neon-pink); border-right: 3px solid var(--neon-pink); }
 
 h2, #scenario-title {
     font-family: var(--font-digital), monospace;
@@ -254,4 +255,62 @@ body.eco-mode button {
 body.eco-mode h1, body.eco-mode h2, body.eco-mode span {
     color: #0f0 !important;
     text-shadow: none !important;
+}
+
+/* ================= ARBRE DE VISUALISATION ================= */
+#flowchart-container {
+    border-color: var(--neon-gold);
+    overflow-x: auto;
+}
+#flowchart-container h2 {
+    color: var(--neon-gold);
+    border-bottom-color: rgba(255, 204, 0, 0.4);
+}
+
+.flow-node-container {
+    position: relative;
+    padding-left: 30px; /* Espace pour les connecteurs */
+    margin-top: 10px;
+}
+
+.flow-node {
+    background: #222;
+    border: 1px solid #555;
+    padding: 10px 15px;
+    display: inline-block;
+    border-radius: 3px;
+    font-size: 0.9rem;
+    color: #999;
+    min-width: 200px;
+}
+
+.flow-node.visited {
+    background: var(--neon-gold);
+    color: #000;
+    border-color: var(--neon-gold);
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+}
+
+.flow-branch {
+    position: relative;
+    margin-left: 20px;
+    padding-left: 30px;
+    border-left: 2px dashed #444;
+}
+
+/* Connecteurs */
+.flow-node-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 18px;
+    width: 30px;
+    height: 2px;
+    background: #444;
+}
+
+.flow-node-container:first-child::before {
+    /* Pas de ligne pour le tout premier noeud */
+    display: none;
 }

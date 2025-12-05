@@ -5,50 +5,8 @@ const realSources = [
     { type: "🛠️", text: "La Forge des Communs Numériques (NIRD)", url: "https://nird.forge.apps.education.fr/" }
 ];
 
-const scenarios = {
-    'start': {
-        title: "Le Choc de l'Obsolescence",
-        description: "Microsoft arrête le support de Windows 10. Vos 200 PC deviennent obsolètes.",
-        choices: [
-            { text: "Acheter 200 PC Windows 11", impactText: "Coût: 1500€ | Écologie: -30", cost: 1500, eco: -30, libre: -10, next: 'gafam' },
-            { text: "Installer Linux Mint", impactText: "Coût: 100€ | Écologie: +40", cost: 100, eco: 40, libre: 30, next: 'linux_party' }
-        ]
-    },
-    'gafam': {
-        title: "L'Offre Empoisonnée",
-        description: "Goliath Corp offre des tablettes gratuites en échange des données élèves.",
-        choices: [
-            { text: "Accepter (C'est gratuit !)", impactText: "Liberté: -40 | Vie privée: 0", cost: 0, eco: -10, libre: -40, next: 'panne' },
-            { text: "Refuser et résister", impactText: "On garde nos vieux PC.", cost: 0, eco: 10, libre: 20, next: 'linux_party' }
-        ]
-    },
-    'linux_party': {
-        title: "L'Install Party",
-        description: "Les parents veulent apprendre à installer Linux chez eux.",
-        choices: [
-            { text: "Organiser l'atelier", impactText: "Cohésion sociale maximale.", cost: 50, eco: 10, libre: 20, next: 'site_web' },
-            { text: "Pas le temps", impactText: "Occasion manquée.", cost: 0, eco: 0, libre: -5, next: 'site_web' }
-        ]
-    },
-    'panne': {
-        title: "Panne Mondiale",
-        description: "Le cloud est en panne. Plus personne ne peut travailler.",
-        choices: [
-            { text: "Attendre...", impactText: "Impuissance totale.", cost: 0, eco: 0, libre: -10, next: 'site_web' },
-            { text: "Monter un serveur local", impactText: "Difficile mais formateur.", cost: 200, eco: 5, libre: 15, next: 'site_web' }
-        ]
-    },
-    'site_web': {
-        title: "Le Site de l'École",
-        description: "Il faut refaire le site web. Quelle technologie choisir ?",
-        choices: [
-            { text: "Un CMS lourd (Wordpress + Plugins)", impactText: "Facile mais énergivore.", cost: 100, eco: -20, libre: 0, next: 'end' },
-            { text: "Site statique léger (HTML/CSS)", impactText: "Green IT validé (Défi 488) !", cost: 200, eco: 20, libre: 10, next: 'end' }
-        ]
-    }
-};
-
-let gameState = JSON.parse(localStorage.getItem('save')) || { budget: 2000, eco: 50, libre: 20, current: 'start', over: false };
+let scenarios = {};
+let gameState = JSON.parse(localStorage.getItem('save')) || { budget: 2000, eco: 50, libre: 20, current: 'start', over: false, path: ['start'] };
 
 /* ================= AMÉLIORATIONS AUDIOVISUELLES ================= */
 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -112,10 +70,14 @@ function updateDisplay() {
     ecoSpan.innerText = gameState.eco + "%";
     libreSpan.innerText = gameState.libre + "%";
 
-    if (gameState.budget <= 0 && !gameState.over) return endGame(false, "Faillite !");
+    if (gameState.budget <= 0 && !gameState.over) return endGame("Faillite !");
 
     const scenar = scenarios[gameState.current];
-    if (!scenar || gameState.current === 'end') return endGame(true, "Mission Terminée !");
+    if (!scenar || scenar.choices.length === 0) {
+        const endTitle = scenar ? scenar.title : "Mission Terminée !";
+        const endDescription = scenar ? scenar.description : "";
+        return endGame(endTitle, endDescription);
+    }
 
     const scenarioCard = document.getElementById('scenario-card');
     scenarioCard.classList.remove('card-animated');
@@ -140,13 +102,16 @@ function updateDisplay() {
             gameState.eco += choice.eco;
             gameState.libre += choice.libre;
             gameState.current = choice.next;
+            if(!gameState.path.includes(choice.next)) {
+                gameState.path.push(choice.next);
+            }
             updateDisplay();
         };
         container.appendChild(btn);
     });
 }
 
-function endGame(victory, msg) {
+function endGame(title, description) {
     gameState.over = true;
     document.getElementById('scenario-card').classList.add('hidden');
     const endCard = document.getElementById('end-game-card');
@@ -157,7 +122,9 @@ function endGame(victory, msg) {
     realSources.forEach(s => resourcesHTML += `<li style="margin-bottom:5px">${s.type} <a href="${s.url}" target="_blank" style="color:var(--neon-blue)">${s.text}</a></li>`);
     resourcesHTML += "</ul></div>";
 
-    document.getElementById('end-game-message').innerHTML = `<strong>${msg}</strong><br>Budget: ${gameState.budget} | Eco: ${gameState.eco}% | Libre: ${gameState.libre}%` + resourcesHTML;
+    document.getElementById('end-game-message').innerHTML = `<strong>${title}</strong><br>${description}<br><br>Budget: ${gameState.budget} | Eco: ${gameState.eco}% | Libre: ${gameState.libre}%` + resourcesHTML;
+    
+    generateFlowchart();
     localStorage.removeItem('save');
 }
 
@@ -321,7 +288,60 @@ window.addEventListener('load', () => {
     document.querySelector('footer').appendChild(badge);
 });
 
-function init() {
+/* ================= ARBRE DE VISUALISATION ================= */
+function generateFlowchart() {
+    const container = document.getElementById('flowchart-container');
+    container.innerHTML = '<h2>Arbre de votre parcours</h2>';
+    container.classList.remove('hidden');
+
+    const nodes = {};
+    const edges = [];
+
+    // Créer tous les nœuds
+    for (const key in scenarios) {
+        nodes[key] = { id: key, label: scenarios[key].title, visited: gameState.path.includes(key) };
+        if (scenarios[key].choices) {
+            scenarios[key].choices.forEach(choice => {
+                edges.push({ from: key, to: choice.next });
+            });
+        }
+    }
+
+    // Construire l'arbre HTML
+    const buildBranch = (nodeId, level = 0) => {
+        const node = nodes[nodeId];
+        if (!node) return '';
+
+        let html = `<div class="flow-node-container" style="margin-left: ${level * 20}px;">`;
+        html += `<div class="flow-node ${node.visited ? 'visited' : ''}">${node.label}</div>`;
+        
+        const children = edges.filter(edge => edge.from === nodeId);
+        if (children.length > 0) {
+            html += '<div class="flow-branch">';
+            children.forEach(childEdge => {
+                html += buildBranch(childEdge.to, level + 1);
+            });
+            html += '</div>';
+        }
+        html += `</div>`;
+        return html;
+    };
+
+    container.innerHTML += buildBranch('start');
+}
+
+
+async function init() {
+    // Réinitialiser le path si c'est une nouvelle partie
+    if (!localStorage.getItem('save')) {
+        gameState.path = ['start'];
+    }
+
+    await fetch('js/story.json')
+        .then(response => response.json())
+        .then(data => {
+            scenarios = data;
+        });
     applyMode();
     updateDisplay();
 }
