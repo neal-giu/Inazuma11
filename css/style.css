@@ -15,7 +15,7 @@
 }
 
 body {
-    font-family: var(--font-main);
+    font-family: var(--font-main), sans-serif;
     color: var(--text-light);
     margin: 0;
     padding: 20px;
@@ -39,7 +39,7 @@ body {
 
 /* --- HEADER --- */
 h1 {
-    font-family: var(--font-digital);
+    font-family: var(--font-digital), monospace;
     font-size: 3.5rem;
     color: var(--neon-pink);
     text-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
@@ -49,7 +49,7 @@ h1 {
 }
 
 .subtitle {
-    font-family: var(--font-main);
+    font-family: var(--font-main), sans-serif;
     font-size: 1.2rem;
     color: var(--neon-blue);
     letter-spacing: 5px;
@@ -67,7 +67,7 @@ h1 {
     border-top: 2px solid var(--neon-blue);
     border-bottom: 2px solid var(--neon-blue);
     backdrop-filter: blur(5px);
-    font-family: var(--font-digital);
+    font-family: var(--font-digital), monospace;
     font-size: 1.5rem;
     box-shadow: 0 0 20px rgba(0, 234, 255, 0.15);
 }
@@ -91,7 +91,7 @@ h1 {
 #scenario-card::after, #end-game-card::after { content: ''; position: absolute; bottom: -2px; right: -2px; width: 30px; height: 30px; border-bottom: 3px solid var(--neon-pink); border-right: 3px solid var(--neon-pink); }
 
 h2, #scenario-title {
-    font-family: var(--font-digital);
+    font-family: var(--font-digital), monospace;
     color: var(--neon-blue);
     text-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
     font-size: 2.5rem;
@@ -107,7 +107,7 @@ p { font-size: 1.3rem; line-height: 1.6; }
 #choices-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
 
 button {
-    font-family: var(--font-digital);
+    font-family: var(--font-digital), monospace;
     padding: 20px;
     cursor: pointer;
     background: rgba(0, 0, 0, 0.4);
@@ -129,7 +129,7 @@ button:hover {
 }
 
 button strong { display: block; font-size: 1.6rem; margin-bottom: 5px; }
-button small { font-family: var(--font-main); font-size: 1rem; color: #ccc; text-transform: none; }
+button small { font-family: var(--font-main), sans-serif; font-size: 1rem; color: #ccc; text-transform: none; }
 
 .choice-btn-sustainable { border-color: var(--neon-green); color: var(--neon-green); }
 .choice-btn-sustainable:hover { background: rgba(0, 255, 153, 0.1); box-shadow: 0 0 15px rgba(0, 255, 153, 0.4); }
@@ -142,7 +142,7 @@ button small { font-family: var(--font-main); font-size: 1rem; color: #ccc; text
 .offline-tag { font-size: 0.8rem; background: var(--neon-green); color: #000; padding: 2px 8px; border-radius: 4px; }
 .ia-subtitle { font-size: 1rem; color: #888; font-style: italic; margin-bottom: 15px; }
 .ia-interface { display: flex; gap: 10px; margin: 15px 0; }
-#user-question { flex-grow: 1; padding: 10px; background: rgba(0, 50, 0, 0.2); border: 1px solid var(--neon-green); color: var(--neon-green); font-family: var(--font-digital); font-size: 1.2rem; }
+#user-question { flex-grow: 1; padding: 10px; background: rgba(0, 50, 0, 0.2); border: 1px solid var(--neon-green); color: var(--neon-green); font-family: var(--font-digital), monospace; font-size: 1.2rem; }
 #btn-ask-bot { border-color: var(--neon-green); color: var(--neon-green); }
 
 /* --- FOOTER & GROS BOUTONS --- */
